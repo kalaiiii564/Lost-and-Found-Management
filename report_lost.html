@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Report Lost Item - SIES Lost & Found</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="admin-body">
+
+    <div class="topbar">
+        <div class="topbar-left">
+            <div class="topbar-logo">📢</div>
+            <div>
+                <div class="topbar-title">Report Lost Item</div>
+                <div class="topbar-sub">SIES College</div>
+            </div>
+        </div>
+        <div class="topbar-right">
+            <span class="topbar-user">
+                <span class="topbar-avatar">{{ session.full_name[0]|upper }}</span>
+                {{ session.full_name }}
+            </span>
+            <a href="/dashboard" class="topbar-logout" style="background: #eff6ff; color: #2563eb;">Dashboard</a>
+            <a href="/logout" class="topbar-logout">Logout</a>
+        </div>
+    </div>
+
+    <div class="admin-shell">
+        <aside class="sidebar">
+            <div class="sidebar-section">MAIN</div>
+            <a href="/dashboard" class="sidebar-link"><i class="fas fa-th-large"></i> Dashboard</a>
+            <a href="/report-lost" class="sidebar-link active"><i class="fas fa-bullhorn"></i> Report Lost</a>
+            <a href="/report-found" class="sidebar-link"><i class="fas fa-search"></i> Report Found</a>
+            <a href="/my-reports" class="sidebar-link"><i class="fas fa-clipboard-list"></i> My Reports</a>
+            <div class="sidebar-section">ACCOUNT</div>
+            <a href="/logout" class="sidebar-link sidebar-logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        </aside>
+
+        <main class="admin-main">
+            <div class="page-header">
+                <h1>📢 Report a Lost Item</h1>
+                <p>Lost something on campus? Fill out the form so we can help you find it.</p>
+            </div>
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endwith %}
+
+            <div class="panel">
+                <form action="/report-lost" method="POST" enctype="multipart/form-data" class="form-pad">
+
+                    <div class="form-group">
+                        <label class="form-label">Item Photo (Optional)</label>
+                        <div class="upload-compact">
+                            <label for="imageInput" class="upload-btn-compact">
+                                <i class="fas fa-camera"></i> Choose Photo
+                            </label>
+                            <span class="upload-filename-compact" id="fileName">No file chosen</span>
+                            <input type="file" id="imageInput" name="image" accept="image/*"
+                                   onchange="document.getElementById('fileName').textContent = this.files[0] ? this.files[0].name : 'No file chosen';">
+                        </div>
+                    </div>
+
+                    <div class="form-section-title">Item Details</div>
+
+                    <div class="form-group">
+                        <label class="form-label">Item Name <span class="req">*</span></label>
+                        <input type="text" name="item_name" class="form-control" placeholder="e.g. Black Backpack" required>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Category <span class="req">*</span></label>
+                            <select name="category" class="form-control" required>
+                                <option value="">Select Category</option>
+                                <option value="Accessories">Accessories</option>
+                                <option value="Electronics">Electronics</option>
+                                <option value="ID Card & Documents">ID Card & Documents</option>
+                                <option value="Books & Stationery">Books & Stationery</option>
+                                <option value="Bags & Purses">Bags & Purses</option>
+                                <option value="Keys & Wallets">Keys & Wallets</option>
+                                <option value="Clothing">Clothing</option>
+                                <option value="Others">Others</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Colour <span class="req">*</span></label>
+                            <input type="text" name="colour" class="form-control" placeholder="e.g. Black" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Brand (Optional)</label>
+                        <input type="text" name="brand" class="form-control" placeholder="e.g. Wildcraft">
+                    </div>
+
+                    <div class="form-section-title">Last Seen Location</div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Building / Block <span class="req">*</span></label>
+                            <select name="building" class="form-control" required>
+                                <option value="">Select Building</option>
+                                <option value="Main Block">Main Block</option>
+                                <option value="Science Block">Science Block</option>
+                                <option value="Commerce Block">Commerce Block</option>
+                                <option value="Library Building">Library Building</option>
+                                <option value="Canteen Area">Canteen Area</option>
+                                <option value="Sports Complex">Sports Complex</option>
+                                <option value="Auditorium">Auditorium</option>
+                                <option value="Other">Other Area</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Floor <span class="req">*</span></label>
+                            <select name="floor" class="form-control" required>
+                                <option value="">Select Floor</option>
+                                <option value="Ground Floor">Ground Floor</option>
+                                <option value="1st Floor">1st Floor</option>
+                                <option value="2nd Floor">2nd Floor</option>
+                                <option value="3rd Floor">3rd Floor</option>
+                                <option value="4th Floor">4th Floor</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Classroom / Room <span class="req">*</span></label>
+                            <input type="text" name="classroom" class="form-control" placeholder="e.g. Room 101" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Date Lost <span class="req">*</span></label>
+                            <input type="date" name="date_event" class="form-control" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Last Seen Spot</label>
+                        <input type="text" name="location_description" class="form-control" placeholder="e.g. Left near bench">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Detailed Description <span class="req">*</span></label>
+                        <textarea name="description" class="form-control" placeholder="Describe the item..." required></textarea>
+                    </div>
+
+                    <button type="submit" class="btn btn-danger btn-full">
+                        <i class="fas fa-bullhorn"></i> Submit Lost Report
+                    </button>
+                </form>
+            </div>
+        </main>
+    </div>
+
+    <footer class="footer">
+        <p> 2026 <strong>SIES College Campus Lost &Found System</strong>.</p>
+    </footer>
+</body>
+</html>

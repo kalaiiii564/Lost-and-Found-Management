@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login - SIES Lost & Found</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <div class="topbar">
+        <div class="topbar-left">
+            <div class="topbar-logo">🔍</div>
+            <div>
+                <div class="topbar-title">SIES Lost & Found</div>
+                <div class="topbar-sub">Campus Portal</div>
+            </div>
+        </div>
+        <div class="topbar-right">
+            <a href="/" class="topbar-logout" style="background: #eff6ff; color: #2563eb;">Home</a>
+            <a href="/signup" class="topbar-logout" style="background: #ecfdf5; color: #059669;">Sign Up</a>
+        </div>
+    </div>
+
+    <div class="auth-wrap">
+        <div class="auth-card">
+            <div class="auth-head">
+                <div class="auth-icon">🔐</div>
+                <h2>Welcome Back</h2>
+                <p>Login to manage your lost & found reports</p>
+            </div>
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endwith %}
+
+            <form action="/login" method="POST">
+                <div class="form-group">
+                    <label class="form-label">Email Address <span class="req">*</span></label>
+                    <input type="email" name="email" class="form-control" placeholder="student@sies.edu" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Password <span class="req">*</span></label>
+                    <input type="password" name="password" class="form-control" placeholder="Enter your password" required>
+                </div>
+                <button type="submit" class="btn btn-primary btn-full">
+                    <i class="fas fa-sign-in-alt"></i> Login
+                </button>
+            </form>
+
+            <div class="auth-foot">
+                Don't have an account? <a href="/signup">Create Account</a>
+            </div>
+
+            <div class="auth-test-box">
+                <strong>🔑 Test Logins:</strong><br>
+                <span>Student: <code>student@sies.edu</code> / <code>student123</code></span><br>
+                <span>Admin: <code>admin@sies.edu</code> / <code>admin123</code></span>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p> 2026 <strong>SIES College Campus Lost & Found System</strong>.</p>
+    </footer>
+</body>
+</html>

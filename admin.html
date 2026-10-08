@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Panel - SIES Lost & Found</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="admin-body">
+
+    <div class="topbar">
+        <div class="topbar-left">
+            <div class="topbar-logo">🛡️</div>
+            <div>
+                <div class="topbar-title">SIES Admin Panel</div>
+                <div class="topbar-sub">Control Center</div>
+            </div>
+        </div>
+        <div class="topbar-right">
+            <span class="topbar-user">
+                <span class="topbar-avatar">{{ session.full_name[0]|upper }}</span>
+                {{ session.full_name }}
+            </span>
+            <a href="/logout" class="topbar-logout">Logout</a>
+        </div>
+    </div>
+
+    <div class="admin-shell">
+        <aside class="sidebar">
+            <div class="sidebar-section">MAIN</div>
+            <a href="/dashboard" class="sidebar-link">
+                <i class="fas fa-th-large"></i> Student View
+            </a>
+            <div class="sidebar-section">ADMIN</div>
+            <a href="/admin" class="sidebar-link active">
+                <i class="fas fa-shield-alt"></i> Admin Panel
+            </a>
+            <a href="/admin/reports" class="sidebar-link">
+                <i class="fas fa-database"></i> All Reports
+            </a>
+            <a href="/admin/users" class="sidebar-link">
+                <i class="fas fa-users"></i> Users
+            </a>
+            <div class="sidebar-section">ACCOUNT</div>
+            <a href="/logout" class="sidebar-link sidebar-logout">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </a>
+        </aside>
+
+        <main class="admin-main">
+            <div class="page-header">
+                <h1>Admin Overview</h1>
+                <p>Monitor all lost & found activity on campus.</p>
+            </div>
+
+            <div class="stat-row">
+                <div class="stat-tile stat-teal">
+                    <div class="stat-tile-icon"><i class="fas fa-users"></i></div>
+                    <div class="stat-tile-info">
+                        <div class="stat-tile-num">{{ stats.total_users }}</div>
+                        <div class="stat-tile-label">Students</div>
+                    </div>
+                </div>
+                <div class="stat-tile stat-orange">
+                    <div class="stat-tile-icon"><i class="fas fa-bullhorn"></i></div>
+                    <div class="stat-tile-info">
+                        <div class="stat-tile-num">{{ stats.total_lost }}</div>
+                        <div class="stat-tile-label">Lost Items</div>
+                    </div>
+                </div>
+                <div class="stat-tile stat-pink">
+                    <div class="stat-tile-icon"><i class="fas fa-search"></i></div>
+                    <div class="stat-tile-info">
+                        <div class="stat-tile-num">{{ stats.total_found }}</div>
+                        <div class="stat-tile-label">Found Items</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel">
+                <div class="panel-head">
+                    <h3><i class="fas fa-table"></i> Recent Reports</h3>
+                    <a href="/admin/reports" class="panel-link">View All →</a>
+                </div>
+                <div class="table-wrap">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Item</th>
+                                <th>Type</th>
+                                <th>Reported By</th>
+                                <th>Location</th>
+                                <th>Date</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in recent_reports %}
+                            <tr>
+                                <td>#{{ item.id }}</td>
+                                <td><strong>{{ item.item_name }}</strong></td>
+                                <td>
+                                    {% if item.type == 'found' %}
+                                        <span class="badge badge-green">FOUND</span>
+                                    {% else %}
+                                        <span class="badge badge-red">LOST</span>
+                                    {% endif %}
+                                </td>
+                                <td>{{ item.full_name }}<br><small class="muted">{{ item.roll_number }}</small></td>
+                                <td>{{ item.building }} — {{ item.classroom }}</td>
+                                <td>{{ item.date_event }}</td>
+                                <td><span class="badge badge-blue">{{ item.status }}</span></td>
+                            </tr>
+                            {% else %}
+                            <tr><td colspan="7" class="empty-row">No reports yet.</td></tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <footer class="footer">
+        <p> 2026 <strong>SIES College Campus Lost &Found System</strong>. All rights reserved.</p>
+    </footer>
+</body>
+</html>

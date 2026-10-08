@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Item Details - Campus Lost & Found</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+    <nav class="navbar">
+        <a href="/" class="navbar-brand">
+            <div class="brand-icon">🔍</div>
+            <div>
+                <div class="brand-text">CAMPUS LOST & FOUND</div>
+                <div class="brand-sub">SIES College</div>
+            </div>
+        </a>
+        <ul class="navbar-links">
+            <li><a href="/dashboard">Home</a></li>
+            <li><a href="/report-lost" class="btn-report-lost">📢 Report Lost</a></li>
+            <li><a href="/report-found" class="btn-report-found">🔍 Report Found</a></li>
+            <li><a href="/my-reports">My Reports</a></li>
+            <li><a href="/logout" class="btn-logout">Logout</a></li>
+        </ul>
+    </nav>
+
+    <div class="container" style="max-width: 900px;">
+
+        <div style="margin-bottom: 1.5rem;">
+            <a href="/dashboard" class="btn btn-secondary btn-sm">← Back to Dashboard</a>
+        </div>
+
+        <div class="item-card" style="padding: 2rem;">
+
+            <div class="no-image" style="border-radius: 12px; margin-bottom: 1.5rem;">
+                <div class="icon" style="font-size: 4rem;">🔍</div>
+                <div style="font-weight: 600; font-size: 1.2rem;">Blue Water Bottle</div>
+            </div>
+
+            <div style="display: flex; gap: 0.5rem; margin-bottom: 0.75rem;">
+                <span class="card-type found">FOUND</span>
+                <span class="badge badge-approved">APPROVED</span>
+            </div>
+
+            <h1 style="font-size: 1.6rem; font-weight: 700; margin-bottom: 1.5rem;">
+                Blue Water Bottle
+            </h1>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+                <div class="detail-box"><strong>📂 Category:</strong> Accessories</div>
+                <div class="detail-box"><strong>🎨 Colour:</strong> Blue</div>
+                <div class="detail-box"><strong>🏷️ Brand:</strong> Milton</div>
+                <div class="detail-box"><strong>📅 Date:</strong> 2026-01-15</div>
+                <div class="detail-box" style="grid-column: 1 / -1;">
+                    <strong>🏢 Location:</strong> Main Block, 2nd Floor (Room 204)
+                </div>
+                <div class="detail-box" style="grid-column: 1 / -1;">
+                    <strong>📍 Exact Spot:</strong> Near the front bench
+                </div>
+            </div>
+
+            <div style="margin-top: 1rem; background: var(--bg); padding: 1rem; border-radius: 8px; border: 1px solid var(--border);">
+                <strong>📝 Description:</strong>
+                <p style="color: var(--text-light); font-size: 0.9rem; margin-top: 0.25rem;">
+                    Blue Milton bottle with a small dent on the cap. Has a red sticker on the side.
+                </p>
+            </div>
+
+            <div style="margin-top: 1rem; padding: 1rem; background: var(--primary-light); border-radius: 8px; border: 1px solid var(--border); font-size: 0.875rem;">
+                <strong style="color: var(--primary);">👤 Reported By:</strong> Rahul Sharma<br>
+                <strong style="color: var(--primary);">📧 Email:</strong> student@sies.edu<br>
+                <strong style="color: var(--primary);">🆔 Roll No:</strong> 21IT105
+            </div>
+
+            <div style="margin-top: 1.5rem; display: flex; gap: 0.75rem; justify-content: flex-end;">
+                <a href="/dashboard" class="btn btn-secondary" style="width: auto;">Close</a>
+            </div>
+
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p> 2026 <strong>SIES College Campus Lost & Found System</strong>. All rights reserved.</p>
+    </footer>
+
+</body>
+</html>

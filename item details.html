@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ item.item_name }} - Details | SIES Lost & Found</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="admin-body">
+
+    <div class="topbar">
+        <div class="topbar-left">
+            <div class="topbar-logo">🔍</div>
+            <div>
+                <div class="topbar-title">Item Details</div>
+                <div class="topbar-sub">SIES College</div>
+            </div>
+        </div>
+        <div class="topbar-right">
+            <span class="topbar-user">
+                <span class="topbar-avatar">{{ session.full_name[0]|upper if session.full_name else 'U' }}</span>
+                {{ session.full_name if session.full_name else 'User' }}
+            </span>
+            <a href="/dashboard" class="topbar-logout" style="background: #eff6ff; color: #2563eb;">Dashboard</a>
+            <a href="/logout" class="topbar-logout">Logout</a>
+        </div>
+    </div>
+
+    <div class="admin-shell">
+        <aside class="sidebar">
+            <div class="sidebar-section">MAIN</div>
+            <a href="/dashboard" class="sidebar-link"><i class="fas fa-th-large"></i> Dashboard</a>
+            <a href="/report-lost" class="sidebar-link"><i class="fas fa-bullhorn"></i> Report Lost</a>
+            <a href="/report-found" class="sidebar-link"><i class="fas fa-search"></i> Report Found</a>
+            <a href="/my-reports" class="sidebar-link"><i class="fas fa-clipboard-list"></i> My Reports</a>
+            <div class="sidebar-section">ACCOUNT</div>
+            <a href="/logout" class="sidebar-link sidebar-logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        </aside>
+
+        <main class="admin-main">
+            <div class="page-header">
+                <a href="/dashboard" class="btn btn-secondary btn-sm" style="margin-bottom: 0.75rem;">
+                    <i class="fas fa-arrow-left"></i> Back to Dashboard
+                </a>
+                <h1>{{ item.item_name }}</h1>
+                <p>Reported item details and reporter contact information.</p>
+            </div>
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endwith %}
+
+            <div class="detail-card">
+                <div class="detail-image-panel">
+                    {% if item.image_filename %}
+                        <img src="/static/uploads/{{ item.image_filename }}" alt="{{ item.item_name }}">
+                    {% else %}
+                        <div class="detail-icon-placeholder">
+                            <div style="font-size: 6rem;">{% if item.type == 'found' %}🔍{% else %}📢{% endif %}</div>
+                            <div class="muted" style="margin-top: 1rem;">No image uploaded</div>
+                        </div>
+                    {% endif %}
+                    <div class="detail-type-badge {% if item.type == 'found' %}found-badge{% else %}lost-badge{% endif %}">
+                        {{ item.type|upper }}
+                    </div>
+                </div>
+
+                <div class="detail-info-panel">
+                    <div class="detail-status-row">
+                        <span class="badge badge-{% if item.status == 'approved' %}green{% elif item.status == 'resolved' %}blue{% elif item.status == 'rejected' %}red{% else %}orange{% endif %}">
+                            {{ item.status|upper }}
+                        </span>
+                        <span class="detail-date">📅 {{ item.date_event }}</span>
+                    </div>
+
+                    <div class="detail-divider"></div>
+
+                    <div class="detail-grid">
+                        <div class="detail-item">
+                            <span class="detail-label">📂 Category</span>
+                            <span class="detail-value">{{ item.category }}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">🎨 Colour</span>
+                            <span class="detail-value">{{ item.colour }}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">🏷️ Brand</span>
+                            <span class="detail-value">{{ item.brand if item.brand else 'Not specified' }}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">🏢 Building</span>
+                            <span class="detail-value">{{ item.building }}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">🏗️ Floor</span>
+                            <span class="detail-value">{{ item.floor }}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">🚪 Classroom</span>
+                            <span class="detail-value">{{ item.classroom }}</span>
+                        </div>
+                    </div>
+
+                    <div class="detail-description-box">
+                        <h3>📝 Description</h3>
+                        <p>{{ item.description }}</p>
+                    </div>
+
+                    <div class="detail-reporter-box">
+                        <h3>👤 Reported By</h3>
+                        <div class="reporter-info">
+                            <div class="reporter-avatar">{{ item.full_name[0]|upper }}</div>
+                            <div>
+                                <div class="reporter-name">{{ item.full_name }}</div>
+                                <div class="reporter-meta">Roll No: {{ item.roll_number }}</div>
+                                <div class="reporter-meta">Email: {{ item.email }}</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="detail-actions">
+                        {% if item.type == 'lost' %}
+                        <form action="/item/{{ item.id }}/notify-owner" method="POST" style="display: inline;">
+                            <button type="submit" class="btn btn-success"
+                                    onclick="return confirm('Send an email to {{ item.full_name }} saying their item has been found?');">
+                                <i class="fas fa-envelope"></i> 📧 Notify Owner (Item Found)
+                            </button>
+                        </form>
+                        {% endif %}
+
+                        <a href="mailto:{{ item.email }}?subject=Regarding your {{ item.type }} item: {{ item.item_name }}" class="btn btn-primary">
+                            <i class="fas fa-envelope"></i> Contact Reporter
+                        </a>
+                        <a href="/dashboard" class="btn btn-secondary">Close</a>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <footer class="footer">
+        <p> 2026 <strong>SIES College Campus Lost & Found System</strong>. All rights reserved.</p>
+    </footer>
+
+</body>
+</html>
